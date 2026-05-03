@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+    /* Royal Palette */
+    --color-primary: #B8860B;
+    /* Dark Goldenrod */
+    --color-primary-light: #DAA520;
+    /* Goldenrod */
+    --color-secondary: #1A1A1A;
+    /* Near Black */
+    --color-accent: #E5E5E5;
+    --color-background: #FDFDFD;
+    --color-surface: #FFFFFF;
+
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Playfair Display', serif;
+
+    --shadow-luxury: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --shadow-luxury-hover: 0 15px 45px rgba(0, 0, 0, 0.1);
+}
+
+@layer base {
+    body {
+        background-color: var(--color-background);
+        color: var(--color-secondary);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-serif);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #e2e2e2;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #d1d1d1;
+    }
+}
+
+@layer components {
+    .luxury-card {
+        background: white;
+        border: 1px solid #f0f0f0;
+        box-shadow: var(--shadow-luxury);
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .luxury-card:hover {
+        box-shadow: var(--shadow-luxury-hover);
+        transform: translateY(-2px);
+    }
+
+    .luxury-button {
+        background: var(--color-primary);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .luxury-button:hover {
+        background: var(--color-primary-light);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
+    }
+}
+
+/* Dark mode global */
+.dark body {
+    background-color: #111827;
+    color: #f9fafb;
+}
+
+.dark .bg-white {
+    background-color: #1f2937 !important;
+}
+
+.dark .text-gray-800 {
+    color: #f9fafb !important;
+}
+
+.dark .text-gray-600 {
+    color: #d1d5db !important;
+}
+
+.dark .text-gray-500 {
+    color: #9ca3af !important;
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200 {
+    border-color: #374151 !important;
+}
+
+.dark .bg-gray-50 {
+    background-color: #374151 !important;
+}
+
+.dark table thead {
+    background-color: #374151 !important;
+}
+
+.dark .hover\:bg-gray-50:hover {
+    background-color: #374151 !important;
+}
+
+.dark input,
+.dark select {
+    background-color: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+}
