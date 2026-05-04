@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://app-spring-production.up.railway.app/login',
 });
 
 // Intercepteur : ajoute le token JWT à chaque requête
