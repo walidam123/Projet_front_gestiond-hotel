@@ -18,14 +18,26 @@ public class HotelApplication {
     @Bean
     CommandLineRunner initUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            userRepository.findByUsername("admin").ifPresent(admin -> {
+            if (userRepository.findByUsername("admin").isEmpty()) {
+                User admin = new User();
+                admin.setName("Administrator");
+                admin.setEmail("admin@hotel.com");
+                admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("Admin123"));
+                admin.setRole("ROLE_ADMIN");
+                admin.setActive(true);
                 userRepository.save(admin);
-            });
-            userRepository.findByUsername("sara").ifPresent(sara -> {
+            }
+            if (userRepository.findByUsername("sara").isEmpty()) {
+                User sara = new User();
+                sara.setName("Sara Reception");
+                sara.setEmail("sara@hotel.com");
+                sara.setUsername("sara");
                 sara.setPassword(passwordEncoder.encode("Reception1"));
+                sara.setRole("ROLE_RECEPTIONNISTE");
+                sara.setActive(true);
                 userRepository.save(sara);
-            });
+            }
         };
     }
 }

@@ -4,10 +4,11 @@ import { Layout } from './components/layout/Layout';
 import { LoginPage } from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import RoomsPage from './pages/RoomsPage';
-import { ReservationsPage } from './pages/ReservationsPage';
+import ReservationsPage from './pages/ReservationsPage';
 import ServicesPage from './pages/ServicesPage';
 import InvoicesPage from './pages/InvoicesPage';
 import UsersPage from './pages/UsersPage';
+import ClientsPage from './pages/ClientsPage';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -41,6 +42,12 @@ function App() {
         <Route path="/invoices" element={
           <PrivateRoute allowedRoles={['ROLE_RECEPTIONNISTE', 'ROLE_ADMIN']}>
             <InvoicesPage />
+          </PrivateRoute>
+        } />
+
+        <Route path="/clients" element={
+          <PrivateRoute allowedRoles={['ROLE_RECEPTIONNISTE', 'ROLE_MANAGER', 'ROLE_ADMIN']}>
+            <ClientsPage />
           </PrivateRoute>
         } />
 

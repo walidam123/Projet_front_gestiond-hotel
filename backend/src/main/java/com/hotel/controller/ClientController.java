@@ -20,11 +20,11 @@ public class ClientController {
         return ResponseEntity.ok(clientRepository.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Client> getById(@PathVariable Long id) {
-        return clientRepository.findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/search")
+    public ResponseEntity<List<Client>> search(@RequestParam String query) {
+        return ResponseEntity.ok(
+            clientRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query)
+        );
     }
 
     @PostMapping
@@ -34,14 +34,14 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client updated) {
-        return clientRepository.findById(id).map(c -> {
-            c.setFirstName(updated.getFirstName());
-            c.setLastName(updated.getLastName());
-            c.setEmail(updated.getEmail());
-            c.setPhone(updated.getPhone());
-            c.setIdDocument(updated.getIdDocument());
-            c.setNationality(updated.getNationality());
-            return ResponseEntity.ok(clientRepository.save(c));
+        return clientRepository.findById(id).map(client -> {
+            client.setFirstName(updated.getFirstName());
+            client.setLastName(updated.getLastName());
+            client.setEmail(updated.getEmail());
+            client.setPhone(updated.getPhone());
+            client.setIdDocument(updated.getIdDocument());
+            client.setNationality(updated.getNationality());
+            return ResponseEntity.ok(clientRepository.save(client));
         }).orElse(ResponseEntity.notFound().build());
     }
 

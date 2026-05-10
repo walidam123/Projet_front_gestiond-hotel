@@ -16,38 +16,41 @@ export default function DashboardPage() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = async () => {
+    try {
+      const [roomsRes, resRes] = await Promise.all([
+        api.get('/rooms'),
+        api.get('/reservations'),
+      ]);
+      setRooms(roomsRes.data);
+      setReservations(resRes.data);
+    } catch {
+      toast.error('Erreur lors du chargement du dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [roomsRes, resRes] = await Promise.all([
-          api.get('/rooms'),
-          api.get('/reservations'),
-        ]);
-        setRooms(roomsRes.data);
-        setReservations(resRes.data);
-      } catch {
-        toast.error('Erreur lors du chargement du dashboard');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    fetchData(); // chargement initial
+
+    // Rafraîchissement automatique toutes les 30 secondes
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval); // nettoyage
   }, []);
 
   // KPIs calculés depuis les vraies données
   const chambresLibres = rooms.filter(r => r.status === 'LIBRE').length;
   const today = new Date().toISOString().split('T')[0];
-  const reservationsAujourdhui = reservations.filter(r => r.checkIn === today).length;
-  const checkInsAujourdhui = reservations.filter(r => r.checkIn === today && r.status === 'CONFIRMEE').length;
-  const revenusJour = reservations
-    .filter(r => r.checkIn === today)
-    .reduce((sum, r) => {
-      if (!r.checkIn || !r.checkOut || !r.room) return sum;
-      const nights = Math.round(
-        (new Date(r.checkOut) - new Date(r.checkIn)) / (1000 * 60 * 60 * 24)
-      );
-      return sum + (nights * (r.room?.pricePerNight || 0));
-    }, 0);
+  const reservationsAujourdhui = reservations.length; // total réservations
+  const checkInsAujourdhui = reservations.filter(r => r.status === 'CONFIRMEE').length;
+  const revenusJour = reservations.reduce((sum, r) => {
+    if (!r.checkIn || !r.checkOut || !r.room) return sum;
+    const nights = Math.round(
+      (new Date(r.checkOut) - new Date(r.checkIn)) / (1000 * 60 * 60 * 24)
+    );
+    return sum + (nights * (r.room?.pricePerNight || 0));
+  }, 0);
 
   const recentReservations = [...reservations]
     .sort((a, b) => b.id - a.id)

@@ -20,6 +20,7 @@ const getIcon = (path) => {
     case '/services': return <ConciergeBell className="w-5 h-5" />;
     case '/invoices': return <Receipt className="w-5 h-5" />;
     case '/users': return <Users className="w-5 h-5" />;
+    case '/clients': return <Users className="w-5 h-5" />;
     default: return <LayoutDashboard className="w-5 h-5" />;
   }
 };
@@ -34,6 +35,7 @@ export function Sidebar() {
     { label: 'Chambres', path: '/rooms', roles: ['ROLE_GOUVERNANTE', 'ROLE_MANAGER', 'ROLE_ADMIN'] },
     { label: 'Services', path: '/services', roles: ['ROLE_MANAGER', 'ROLE_ADMIN'] },
     { label: 'Facturation', path: '/invoices', roles: ['ROLE_RECEPTIONNISTE', 'ROLE_ADMIN'] },
+    { label: 'Clients', path: '/clients', roles: ['ROLE_RECEPTIONNISTE', 'ROLE_MANAGER', 'ROLE_ADMIN'] },
     { label: 'Utilisateurs', path: '/users', roles: ['ROLE_ADMIN'] },
   ].filter(item => item.roles.includes('all') || item.roles.includes(user?.role));
 

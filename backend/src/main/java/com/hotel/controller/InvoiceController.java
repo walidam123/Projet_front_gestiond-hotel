@@ -36,6 +36,11 @@ public class InvoiceController {
             .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) {
+        return ResponseEntity.ok(invoiceRepository.save(invoice));
+    }
+
     @PostMapping("/{id}/close")
     public ResponseEntity<?> closeInvoice(@PathVariable Long id) {
         return invoiceRepository.findById(id).map(invoice -> {
