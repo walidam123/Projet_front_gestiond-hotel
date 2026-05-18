@@ -131,6 +131,21 @@ export default function ReservationsPage() {
     }
   };
 
+  const checkAvailability = async (roomId, checkIn, checkOut) => {
+    if (!roomId || !checkIn || !checkOut) return;
+    try {
+      const res = await api.get('/reservations/check-availability', {
+        params: { roomId, checkIn, checkOut }
+      });
+      if (!res.data.available) {
+        toast.error(res.data.message);
+        setForm(prev => ({ ...prev, roomId: '' }));
+      }
+    } catch {
+      toast.error('Erreur lors de la vérification de disponibilité');
+    }
+  };
+
   useEffect(() => { fetchAll(); }, []);
 
   // Convertir les réservations en événements pour le calendrier
@@ -266,7 +281,12 @@ export default function ReservationsPage() {
                 </label>
                 <select
                   value={form.roomId}
-                  onChange={e => setForm({ ...form, roomId: e.target.value })}
+                  onChange={e => {
+                    setForm({ ...form, roomId: e.target.value });
+                    if (e.target.value && form.checkIn && form.checkOut) {
+                      checkAvailability(e.target.value, form.checkIn, form.checkOut);
+                    }
+                  }}
                   className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 >
                   <option value="">Sélectionnez une chambre</option>
@@ -287,7 +307,12 @@ export default function ReservationsPage() {
                   <input
                     type="date"
                     value={form.checkIn}
-                    onChange={e => setForm({ ...form, checkIn: e.target.value })}
+                    onChange={e => {
+                      setForm({ ...form, checkIn: e.target.value });
+                      if (form.roomId && e.target.value && form.checkOut) {
+                        checkAvailability(form.roomId, e.target.value, form.checkOut);
+                      }
+                    }}
                     className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   />
                 </div>
@@ -298,7 +323,12 @@ export default function ReservationsPage() {
                   <input
                     type="date"
                     value={form.checkOut}
-                    onChange={e => setForm({ ...form, checkOut: e.target.value })}
+                    onChange={e => {
+                      setForm({ ...form, checkOut: e.target.value });
+                      if (form.roomId && form.checkIn && e.target.value) {
+                        checkAvailability(form.roomId, form.checkIn, e.target.value);
+                      }
+                    }}
                     className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   />
                 </div>

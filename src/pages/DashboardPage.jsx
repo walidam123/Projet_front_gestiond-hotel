@@ -41,9 +41,6 @@ export default function DashboardPage() {
 
   // KPIs calculés depuis les vraies données
   const chambresLibres = rooms.filter(r => r.status === 'LIBRE').length;
-  const today = new Date().toISOString().split('T')[0];
-  const reservationsAujourdhui = reservations.length; // total réservations
-  const checkInsAujourdhui = reservations.filter(r => r.status === 'CONFIRMEE').length;
   const revenusJour = reservations.reduce((sum, r) => {
     if (!r.checkIn || !r.checkOut || !r.room) return sum;
     const nights = Math.round(
@@ -87,10 +84,12 @@ export default function DashboardPage() {
             <div className="p-2 bg-blue-100 rounded-lg">
               <Calendar className="w-5 h-5 text-blue-600" />
             </div>
-            <span className="text-sm text-gray-500">Réservations aujourd'hui</span>
+            <span className="text-sm text-gray-500">Total réservations</span>
           </div>
-          <p className="text-3xl font-bold text-gray-800">{reservationsAujourdhui}</p>
-          <p className="text-xs text-gray-400 mt-1">check-in le {today}</p>
+          <p className="text-3xl font-bold text-gray-800">{reservations.length}</p>
+          <p className="text-xs text-gray-400 mt-1">
+            {reservations.filter(r => r.status === 'ANNULEE').length} annulée(s)
+          </p>
         </div>
 
         <div className="bg-white rounded-xl border shadow-sm p-5">
@@ -98,10 +97,14 @@ export default function DashboardPage() {
             <div className="p-2 bg-purple-100 rounded-lg">
               <CheckSquare className="w-5 h-5 text-purple-600" />
             </div>
-            <span className="text-sm text-gray-500">Check-ins du jour</span>
+            <span className="text-sm text-gray-500">Réservations confirmées</span>
           </div>
-          <p className="text-3xl font-bold text-gray-800">{checkInsAujourdhui}</p>
-          <p className="text-xs text-gray-400 mt-1">confirmés aujourd'hui</p>
+          <p className="text-3xl font-bold text-gray-800">
+            {reservations.filter(r => r.status === 'CONFIRMEE').length}
+          </p>
+          <p className="text-xs text-gray-400 mt-1">
+            {reservations.filter(r => r.status === 'EN_COURS').length} en cours
+          </p>
         </div>
 
         <div className="bg-white rounded-xl border shadow-sm p-5">
@@ -109,10 +112,10 @@ export default function DashboardPage() {
             <div className="p-2 bg-yellow-100 rounded-lg">
               <TrendingUp className="w-5 h-5 text-yellow-600" />
             </div>
-            <span className="text-sm text-gray-500">Revenus du jour</span>
+            <span className="text-sm text-gray-500">Revenus totaux</span>
           </div>
           <p className="text-3xl font-bold text-gray-800">{revenusJour} MAD</p>
-          <p className="text-xs text-gray-400 mt-1">basé sur les réservations</p>
+          <p className="text-xs text-gray-400 mt-1">toutes réservations confondues</p>
         </div>
       </div>
 
