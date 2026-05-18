@@ -1,4 +1,4 @@
-# 🏨 Système de Gestion Hôtelière - Antigravity
+# 🏨 Système de Gestion Hôtelière 
 
 Une application full-stack moderne pour la gestion complète d'un établissement hôtelier. Ce projet intègre une interface utilisateur intuitive en React et un backend robuste sécurisé avec Spring Boot.
 
